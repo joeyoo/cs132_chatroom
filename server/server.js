@@ -3,9 +3,9 @@ import express from 'express';
 import orm from 'orm';
 
 // Import Models
-import UserModel from '../models/User.js';
-import ChatRoomModel from '../models/ChatRoom.js';
-import MessageModel from '../models/Message.js';
+import UserModel from './models/User.js';
+import ChatRoomModel from './models/ChatRoom.js';
+import MessageModel from './models/Message.js';
 
 let app = express();
 let db = new sqlite3.Database(':memory:');
