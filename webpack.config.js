@@ -1,15 +1,15 @@
 var path = require('path');
 
 module.exports = {
-  context: __dirname,
   entry: './client/index.js',
   output: {
-    path: path.join(__dirname, 'client/public'),
+    path: path.resolve(__dirname, 'client/public'),
     publicPath: '/client/public/',
     filename: 'bundle.js'
   },
+  devtool: 'source-map',
   devServer: {
-    publicPath: path.join(__dirname, '/client/public/')
+    publicPath: '/client/public/'
   },
   resolve: {
     extensions: ['.js', '.json']

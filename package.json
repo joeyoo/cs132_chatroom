@@ -6,7 +6,7 @@
   "scripts": {
     "dev-server": "nodemon server/index.js --exec babel-node --presets es2015,react",
     "build": "webpack",
-    "dev-client": "webpack-dev-server --port 3000"
+    "dev-client": "webpack-dev-server --hot --port 3000"
   },
   "author": "Joseph Yoo",
   "license": "ISC",
