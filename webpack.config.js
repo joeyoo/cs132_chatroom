@@ -7,7 +7,6 @@ module.exports = {
     publicPath: '/client/public/',
     filename: 'bundle.js'
   },
-  devtool: 'source-map',
   devServer: {
     publicPath: '/client/public/'
   },
@@ -15,11 +14,15 @@ module.exports = {
     extensions: ['.js', '.json']
   },
   module: {
-    rules: [
+    loaders: [
+      {
+        test: /\.css$/,
+        loader: 'style-loader'
+      },
       {
         exclude: /node_modules/,
         test: /\.js$/,
-        loader: 'babel-loader'
+        loaders: ['react-hot-loader','babel-loader']
       }
     ]
   },
