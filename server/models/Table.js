@@ -12,7 +12,7 @@ function Table(name) {
     var columns = this.columns;
     var columnString = [];
 
-    for (i = 0; i < columns.length; i++) {
+    for (var i = 0; i < columns.length; i++) {
       columnString[i] = columns[i].toSQL();
     }
     columnString = columnString.join(", ");
