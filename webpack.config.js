@@ -8,7 +8,12 @@ module.exports = {
     filename: 'bundle.js'
   },
   devServer: {
-    publicPath: '/client/public/'
+    publicPath: '/client/public/',
+    proxy: {
+      "/api": {
+        target: "http://localhost:8080"
+      }
+    }
   },
   resolve: {
     extensions: ['.js', '.json']
@@ -17,11 +22,11 @@ module.exports = {
     loaders: [
       {
         test: /\.css$/,
-        loader: 'style-loader'
+        loader: 'style-loader!css-loader'
       },
       {
-        exclude: /node_modules/,
         test: /\.js$/,
+        exclude: /node_modules/,
         loaders: ['react-hot-loader','babel-loader']
       }
     ]

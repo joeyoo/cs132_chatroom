@@ -1,9 +1,36 @@
+// Import vendor modules
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import Foundation, {Row, Column} from 'react-foundation';
 
-import App from './components/app.js';
+// Import css
+import './public/css/app.css';
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
+import {
+  Header, RoomList, Room, RoomDetails, Footer, // import components
+  store // import store
+} from './modules/index';
+
+render(
+  <Provider store={store}>
+    <Row large={12} id='app'>
+      <Row large={12}>
+        <Header />
+      </Row>
+
+      <Row large={12}>
+        <RoomList />
+
+        <Room />
+
+        <RoomDetails />
+      </Row>
+
+      <Row large={12}>
+        <Footer />
+      </Row>
+    </Row>
+  </Provider>,
+  document.getElementById('app')
+)

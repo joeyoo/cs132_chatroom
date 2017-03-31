@@ -1,0 +1,29 @@
+#app {
+  height: 100vh;
+}
+
+#header {
+  background-color: springgreen;
+  text-align: center;
+  color: white;
+}
+
+#footer {
+  background-color: springgreen;
+  text-align: center;
+  color: white;
+}
+
+.chatroom {
+  border: solid 1px springgreen;
+}
+.details {
+  border: solid 1px springgreen;
+}
+.roomList {
+  border: solid 1px springgreen;
+}
+
+textarea {
+  resize: none;
+}
