@@ -5,8 +5,8 @@ const Room = React.createClass({
   render() {
     return(
       <Column large={7} className='chatroom'>
+        <h5 style={{textAlign:'center'}}>Current Room</h5>
         <ul className='menu vertical chatroom'>
-          <li className='menu-text'>Current Room</li>
           <li>Sample</li>
           <li>Sample</li>
           <li>Sample</li>

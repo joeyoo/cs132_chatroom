@@ -25,10 +25,6 @@ const App = React.createClass({
 
           <RoomDetails />
         </Row>
-
-        <Row large={12}>
-          <Footer />
-        </Row>
       </Row>
     )
   }

@@ -5,7 +5,7 @@ const Header = React.createClass({
     return(
       <div id='header'>
 
-        <h1>Publo:</h1>
+        <h1>Room-ly-fy-er</h1>
 
       </div>
     )

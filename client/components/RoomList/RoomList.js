@@ -20,8 +20,8 @@ const RoomList = React.createClass({
   render() {
     return(
       <Column large={2}>
+        <h5 style={{textAlign:'center'}}>Public Rooms</h5>
         <ul className='menu vertical roomList'>
-          <li className='menu-text'>Public Rooms</li>
           {this.props.currentRooms.map(function(room) {
             return( <li key={room.id}>{room.id}</li> )
           })}
