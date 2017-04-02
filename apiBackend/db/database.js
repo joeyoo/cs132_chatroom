@@ -2,7 +2,7 @@ var anyDB = require('any-db');
 
 var pool = anyDB.createPool('sqlite3://apiBackend/db/chatroom.db', {
   min: 2,
-  max: 20
+  max: 30
 })
 
 // Import database helper models
@@ -15,7 +15,9 @@ messages.addColumn(new Column("id", "INTEGER", "PRIMARY KEY AUTOINCREMENT"));
 messages.addColumn(new Column("body", "TEXT"));
 pool.query(messages.toSQL())
   .on('error', console.error)
-  .on('data', console.log); // map to sql database
+  .on('data', function() {
+    console.log(messages.toSQL());
+  });
 
 // 'chatrooms' Table model
 var chatrooms = new Table("chatrooms");
@@ -23,7 +25,16 @@ chatrooms.addColumn(new Column("id", "TEXT", "PRIMARY KEY"));
 chatrooms.addColumn(new Column("name", "TEXT"));
 pool.query(chatrooms.toSQL())
   .on('error', console.error)
-  .on('data', console.log); // map to sql database
+  .on('data', function() {
+    console.log(chatrooms.toSQL());
+  });
+
+// Import database seed function
+// require('./seed.js')(pool);
+
+pool.query("SELECT * FROM chatrooms", function(err,data) {
+  console.log(data);
+})
 
 module.exports = {
   pool: pool,

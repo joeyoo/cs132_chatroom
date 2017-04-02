@@ -8,22 +8,26 @@
   color: white;
 }
 
-#footer {
-  background-color: springgreen;
-  text-align: center;
-  color: white;
-}
 
 .chatroom {
   border: solid 1px springgreen;
 }
+  textarea {
+    resize: none;
+  }
+
 .details {
   border: solid 1px springgreen;
 }
+
 .roomList {
   border: solid 1px springgreen;
+  overflow-y: scroll;
+  max-height: 80vh;
 }
 
-textarea {
-  resize: none;
+#footer {
+  background-color: springgreen;
+  text-align: center;
+  color: white;
 }

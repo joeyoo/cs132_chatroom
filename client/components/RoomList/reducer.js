@@ -2,7 +2,7 @@ const DEFAULT_STATE = {
   currentRooms: []
 }
 
-const RoomsList = (state = DEFAULT_STATE, action) => {
+const RoomList = (state = DEFAULT_STATE, action) => {
   switch(action.type){
     case 'UPDATE_ROOMS_LIST':
       return {...state, currentRooms: action.currentRooms}
@@ -12,4 +12,4 @@ const RoomsList = (state = DEFAULT_STATE, action) => {
 
 }
 
-export default RoomsList;
+export default RoomList;

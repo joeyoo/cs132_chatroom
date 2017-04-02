@@ -13,7 +13,7 @@ export const FETCH_ROOMS_LIST = 'FETCH_ROOMS_LIST';
 
   export const fetchRoomsList = () => {
     return (dispatch) => {
-      axios.get('http://localhost:8080/api/rooms')
+      axios.get('http://localhost:8080/api/chatrooms')
         .then((res) => {
           dispatch(updateRoomsList(res.data));
         })

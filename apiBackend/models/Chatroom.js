@@ -1,7 +1,7 @@
 var uuid = require('uuid/v4');
 
 function Chatroom() {
-  this.id = this.generateID;
+  this.id = this.generateID();
   this.name = this.setName;
   this.users = this.getUsers;
   this.messages = this.getMessages;

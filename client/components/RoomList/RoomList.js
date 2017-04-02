@@ -16,24 +16,15 @@ const RoomList = React.createClass({
   },
   componentDidMount() {
     this.props.dispatch(fetchRoomsList());
-    
   },
   render() {
     return(
       <Column large={2}>
         <ul className='menu vertical roomList'>
           <li className='menu-text'>Public Rooms</li>
-          {console.log(this.props)}
-
-          {/* {this.props.currentRooms.map(function(room) {
-            return(
-              <li>
-                {room.id} -
-                {room.name}
-              </li>
-            )
-          })} */}
-
+          {this.props.currentRooms.map(function(room) {
+            return( <li key={room.id}>{room.id}</li> )
+          })}
         </ul>
       </Column>
     )
@@ -42,7 +33,7 @@ const RoomList = React.createClass({
 
 const mapStateToProps = (state) => {
   return {
-    currentRooms: state.currentRooms
+    currentRooms: state.RoomList.currentRooms
   }
 }
 
