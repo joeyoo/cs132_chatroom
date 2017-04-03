@@ -1,13 +1,13 @@
-var uuid = require('uuid/v4');
-
 function Chatroom() {
   this.id = this.generateID();
-  this.name = this.setName;
-  this.users = this.getUsers;
-  this.messages = this.getMessages;
+  this.name = this.setName();
+  this.users = this.getUsers();
+  this.messages = this.getMessages();
 }
 
 Chatroom.prototype.generateID = function(currentIDs) {
+  var uuid = require('uuid/v4');
+  
   currentIDs = currentIDs || [];
 
   var uniqueID;

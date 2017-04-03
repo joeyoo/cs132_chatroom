@@ -1,14 +1,15 @@
-var dbConnection = require('../db/database.js').pool;
+var dbConnection = require('../db/database.js');
 var Chatroom = require('../models/Chatroom.js');
 
-exports.index = function(req, res) {
-  dbConnection.query("SELECT * FROM chatrooms;", function(err,data) {
-    if (err) return console.error(err);
+exports.GET = function(req, res) {
+  var sql = "SELECT * FROM chatrooms;";
+  dbConnection.query(sql, function(error, data) {
+    if (error) console.error(error);
     res.json(data.rows);
-  })
+  });
 };
 
-exports.create = function(req, res) {
+exports.POST = function(req, res) {
   var chatroom = new Chatroom();
   var currentIDs = [];
 
@@ -19,8 +20,11 @@ exports.create = function(req, res) {
 
   chatroom.generateID(currentIDs);
 
-  if (req.params.roomName) chatroom.setName(req.params.roomName);
+  if (req.body.roomName) chatroom.setName("'"+req.body.roomName+"'");
 
-  dbConnection.query("INSERT INTO chatrooms (id,name) VALUES (" + chatroom.id + "," + chatroom.name + ");")
-    .on('err', console.error);
+  var sql = "INSERT INTO chatrooms (id,name) VALUES ($1,$2);"
+
+  dbConnection.query(sql, [chatroom.id, chatroom.name])
+    .on('error', console.error)
+    .on('data', res.json(data));
 }
