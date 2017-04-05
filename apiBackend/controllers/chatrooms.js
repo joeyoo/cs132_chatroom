@@ -6,25 +6,25 @@ exports.GET = function(req, res) {
   dbConnection.query(sql, function(error, data) {
     if (error) console.error(error);
     res.json(data.rows);
+    console.log(__filename, "\n", data.rows);
   });
 };
 
 exports.POST = function(req, res) {
-  var chatroom = new Chatroom();
-  var currentIDs = [];
 
+var currentIDs = [];
   dbConnection.query("SELECT id FROM chatrooms;", function(err,data) {
     if (err) return console.error(err);
     currentIDs = data;
   });
 
-  chatroom.generateID(currentIDs);
+var roomName;
+  if (req.body.roomName) roomName = req.body.roomName;
 
-  if (req.body.roomName) chatroom.setName("'"+req.body.roomName+"'");
-
-  var sql = "INSERT INTO chatrooms (id,name) VALUES ($1,$2);"
-
-  dbConnection.query(sql, [chatroom.id, chatroom.name])
-    .on('error', console.error)
-    .on('data', res.json(data));
+var sql = "INSERT INTO chatrooms (id,name) VALUES ($1,$2);";
+var chatroom = new Chatroom(roomName, currentIDs);
+  dbConnection.query(sql, [chatroom.id, chatroom.name], function(err,data) {
+    if (err) console.error;
+    res.json(data);
+  });
 }

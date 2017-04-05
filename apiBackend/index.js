@@ -1,8 +1,6 @@
 // Import Modules
 var express = require('express');
 var cors = require('cors');
-var http = require('http');
-var socketio = require('socket.io');
 var bodyParser = require('body-parser');
 
 // Import Controllers
@@ -11,22 +9,6 @@ var messagesController = require('./controllers/messages.js');
 
 var Router = express();
   Router.use([cors(), bodyParser.json()]);
-
-/*
-  SOCKET CONFIG
-*/
-var server = http.createServer(Router);
-var io = socketio(server);
-
-io.on('connection', function(socket){
-  console.log('user has connected');
-
-
-  socket.emit('', {'hello': 'world'});
-  socket.on('/api/POST/messages', function (data) {
-    console.log(data);
-  });
-});
 
 // Begin listening with a success callback
 Router.listen(8080, function() {

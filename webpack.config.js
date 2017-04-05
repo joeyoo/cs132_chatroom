@@ -7,6 +7,7 @@ module.exports = {
     publicPath: '/client/public/',
     filename: 'bundle.js'
   },
+  devtool: 'source-map',
   devServer: {
     publicPath: '/client/public/',
     proxy: {

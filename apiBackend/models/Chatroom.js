@@ -1,13 +1,11 @@
-function Chatroom() {
-  this.id = this.generateID();
-  this.name = this.setName();
-  this.users = this.getUsers();
-  this.messages = this.getMessages();
+function Chatroom(roomName, currentIDs) {
+  this.id = generateID(currentIDs);
+  this.name = roomName || this.id;
 }
 
 Chatroom.prototype.generateID = function(currentIDs) {
   var uuid = require('uuid/v4');
-  
+
   currentIDs = currentIDs || [];
 
   var uniqueID;
@@ -45,22 +43,6 @@ Chatroom.prototype.generateID = function(currentIDs) {
   else {
     this.generateID(currentIDs);
   };
-}
-
-Chatroom.prototype.setName = function(name) {
-  return name || this.users[0];
-}
-
-Chatroom.prototype.getUsers = function(users) {
-  return users;
-}
-
-Chatroom.prototype.getUsers = function(users) {
-  return users;
-}
-
-Chatroom.prototype.getMessages = function(messages) {
-  return messsages || [];
 }
 
 module.exports = Chatroom;

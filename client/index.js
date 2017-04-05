@@ -6,14 +6,9 @@ import { Provider } from 'react-redux';
 // Import css
 import './public/css/app.css';
 
-import App from './modules/App';
+import App from './components/App';
 
-import store from './modules/AppReducer'; // import Redux store
-
-store.subscribe(()=>{
-  console.log('new client state', store.getState());
-});
-store.dispatch({type:'server/hello', data:'Hello!'});
+import store from './state/rootReducer'; // import Redux store
 
 render(
   <Provider store={store}>

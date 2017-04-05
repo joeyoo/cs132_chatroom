@@ -21,6 +21,7 @@ messages.addColumn(new Column("created_at", "DATETIME", "DEFAULT CURRENT_TIMESTA
 var chatrooms = new Table("chatrooms");
 chatrooms.addColumn(new Column("id", "TEXT", "PRIMARY KEY"));
 chatrooms.addColumn(new Column("name", "TEXT"));
+chatrooms.addColumn(new Column("userCount", "INTEGER", "DEFAULT 0"));
 
 // Map models to Sqlite Database
 pool.query(messages.toSQL())
