@@ -18,12 +18,9 @@ var currentIDs = [];
     currentIDs = data;
   });
 
-var roomName;
-  if (req.body.roomName) roomName = req.body.roomName;
-
-var sql = "INSERT INTO chatrooms (id,name) VALUES ($1,$2);";
-var chatroom = new Chatroom(roomName, currentIDs);
-  dbConnection.query(sql, [chatroom.id, chatroom.name], function(err,data) {
+var sql = "INSERT INTO chatrooms (id) VALUES ($1);";
+var chatroom = new Chatroom(currentIDs);
+  dbConnection.query(sql, [chatroom.id], function(err,data) {
     if (err) console.error;
     res.json(data);
   });

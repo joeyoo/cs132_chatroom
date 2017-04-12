@@ -11,15 +11,15 @@ import thunk from 'redux-thunk'; // middleware to allow functions/delayed functi
 import { composeWithDevTools } from 'redux-devtools-extension'; // helper module to use with the redux dev tools chrome extension
 
 // Import all reducers to be combined by combineReducers()
-import global from './global/index';
+import session from './session/index';
 import RoomList from './RoomList/index';
-import Room from './Room/index';
+import CurrentRoom from './CurrentRoom/index';
 
 export default createStore(
   combineReducers({
-    global,
-    RoomList,
-    Room
+    session,
+    CurrentRoom,
+    RoomList
   }),
   composeWithDevTools(
     applyMiddleware(thunk)

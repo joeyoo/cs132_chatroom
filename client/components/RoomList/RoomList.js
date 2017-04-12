@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import ClickableRoom from './components/ClickableRoom';
-import CreateRoomButton from './components/CreateRoomButton';
+import ClickableRoom from './ClickableRoom';
+import CreateRoomButton from './CreateRoomButton';
 
 import { RoomListActions } from '../../state/actionsIndex';
 const { fetchRoomsList } = RoomListActions;
@@ -41,13 +41,13 @@ const mapStateToProps = (state, ownProps) => {
   if ( state.RoomList.currentRooms != ownProps.currentRooms ) {
     return {
       currentRooms: state.RoomList.currentRooms,
-      currentRoom: state.global.currentRoom
+      currentRoom: state.session.currentRoom
     }
   }
   else {
     return {
       currentRooms: ownProps.currentRooms,
-      currentRoom: state.global.currentRoom
+      currentRoom: state.session.currentRoom
     }
   }
 }

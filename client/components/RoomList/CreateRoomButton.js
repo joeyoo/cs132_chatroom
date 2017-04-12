@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import {Button} from 'react-foundation';
 
-import {RoomListActions} from '../../../state/actionsIndex';
+import {RoomListActions} from '../../state/actionsIndex';
 const { requestPostRoom } = RoomListActions;
 
 const CreateRoomButton = React.createClass({

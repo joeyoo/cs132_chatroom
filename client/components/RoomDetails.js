@@ -9,20 +9,8 @@ const RoomDetails = React.createClass({
       <Column large={3}>
         <h5 style={{textAlign:'center'}}>Room Details</h5>
         <ul className='menu vertical details'>
-          <li>Sample</li>
-          <li>Sample</li>
-          <li>Sample</li>
-          <li>Sample</li>
-          <li>Sample</li>
-          <li>Sample</li>
-          <li>Sample</li>
-          <li>Sample</li>
-          <li>Sample</li>
-          <li>Sample</li>
-          <li>Sample</li>
-          <li>Sample</li>
-          <li>Sample</li>
-          <li>Sample</li>
+          <li> id: {this.props.id}</li>
+          {this.props.users.map((user)=>{return(<li>{user.username}</li>)})}
 
         </ul>
 
@@ -40,7 +28,8 @@ RoomDetails.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    id: state.RoomList.currentRoom.id
+    id: state.session.currentRoom.id,
+    users: state.CurrentRoom.users
   }
 };
 

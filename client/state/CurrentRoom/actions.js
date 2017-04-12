@@ -23,3 +23,10 @@ import { CONSTANTS } from './index';
 
     }
   }
+
+  export const setMyUsername = (username) => {
+    return {
+      type: CONSTANTS.SET_MY_USERNAME,
+      username: username
+    }
+  }

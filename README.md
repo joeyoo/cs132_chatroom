@@ -1,5 +1,10 @@
 # cs132_chatroom
 
+How to run:
+  1. 'npm run dev-server' to run server
+  2. 'npm run dev-client' to run client
+  3. open 'http://localhost:3000' to run client **'port 8080 is the express server'
+
 ### Database Schema:
     Chatroom {
       id: text(generated alphanumeric id),

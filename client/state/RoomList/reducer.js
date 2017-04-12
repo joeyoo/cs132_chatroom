@@ -1,5 +1,4 @@
 const DEFAULT_STATE = {
-  currentRoom: {},
   currentRooms: []
 }
 

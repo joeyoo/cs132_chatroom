@@ -3,30 +3,22 @@ import { connect } from 'react-redux';
 
 import { Column, Colors } from 'react-foundation';
 
-import { globalActions } from '../../../state/actionsIndex';
-const {setCurrentRoom} = globalActions;
+import { sessionActions } from '../../state/actionsIndex';
+const {setCurrentRoom} = sessionActions;
 
 const ClickableRoom = React.createClass({
   handleRoomClick(event) {
     event.preventDefault();
-
-    if (!this.props.myUsername) {
-      // PROMPT USER TO CREATE USERNAME
-    }
-    else {
-      // the redux store will have a username for this session
-      // so just do the usual
-    }
     this.props.dispatch(setCurrentRoom(this.props));
   },
   render() {
     return(
       <li>
-        <Column small={10}>
+        <Column small={7}>
           <a onClick={this.props.handleRoomClick}>{this.props.id}</a>
         </Column>
-        <Column small={2} color={Colors.ALERT}>
-          <p></p>
+        <Column small={5} color={Colors.ALERT}>
+          <i className='fa fa-user' aria-hidden="true"></i> 1
         </Column>
       </li>
     )
@@ -37,8 +29,7 @@ const ClickableRoom = React.createClass({
 ClickableRoom.propTypes = {
   id: PropTypes.string.isRequired,
   handleRoomClick: PropTypes.func.isRequired,
-  userCount: PropTypes.number,
-  myUsername: PropTypes.string
+  userCount: PropTypes.number
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
