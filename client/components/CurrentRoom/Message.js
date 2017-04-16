@@ -5,13 +5,10 @@ import { Callout, Column } from 'react-foundation';
 const Message = React.createClass({
   render() {
     return (
-      <Callout class='message'>
-        <Column small={3}>
-          <h5>{this.props.sender}</h5>
-        </Column>
-        <Column small={9}>
-          <p>{this.props.body}</p>
-        </Column>
+      <Callout className='message'>
+        <p>
+          <span className='message-username'>{this.props.sender}</span>: <span className='message-body'>{this.props.body}</span>
+        </p>
       </Callout>
     )
   }

@@ -12,6 +12,16 @@
 .chatroom {
   border: solid 1px springgreen;
 }
+  .messagesContainer {
+    overflow-y: scroll;
+    max-height: 80vh;
+  }
+  .message {
+
+  }
+  .message-username {
+    font-weight: bold;
+  }
   textarea {
     resize: none;
   }

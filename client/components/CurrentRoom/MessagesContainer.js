@@ -3,9 +3,15 @@ import React, {PropTypes} from 'react';
 import Message from './Message';
 
 const MessagesContainer = React.createClass({
+  componentDidMount() {
+    // scroll to bottom
+  },
+  componentDidUpdate() {
+    // scroll to bottom
+  },
   render() {
     return(
-      <ul className='menu vertical chatroom'>
+      <ul className='menu vertical messagesContainer'>
         {this.props.messages.map(function(message) {
           return(<Message {...message} />)
         })}
@@ -13,7 +19,7 @@ const MessagesContainer = React.createClass({
     )
   }
 });
-const { arrayOf, instanceOf, func, string } = PropTypes;
+const { arrayOf, instanceOf } = PropTypes;
 MessagesContainer.propTypes = {
   messages: arrayOf(instanceOf(Message).isRequired)
 }

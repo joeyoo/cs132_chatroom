@@ -16,11 +16,36 @@ import { CONSTANTS } from './index';
         url: "http://localhost:8080/api/" + roomID +"/messages"
       })
       .then((res) => {
-        console.log(res.data);
         dispatch(updateMessages(res.data));
       })
       .catch((error) => console.error);
 
+    }
+  }
+
+  export const addMessage = (message, roomID) => {
+    return {
+      type: CONSTANTS.ADD_MESSAGE,
+      sender: message.sender,
+      body: message.body,
+      roomID: roomID
+    }
+  }
+
+  export const postMessage = (message, roomID) => {
+    return (dispatch) => {
+      axios({
+        method: 'post',
+        url: 'http://localhost:8080/api/' + roomID + '/messages',
+        data: {
+          sender: message.sender,
+          body: message.body
+        }
+      })
+      .then((res)=>{
+        dispatch(addMessage(message, roomID))
+      })
+      .catch((error)=> console.error)
     }
   }
 

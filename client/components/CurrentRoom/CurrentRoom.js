@@ -15,27 +15,24 @@ const CurrentRoom = React.createClass({
   handleUsernameSubmit(username, roomID) {
     dispatch(setMyUsername(username));
     dispatch(joinRoom(username, roomID));
-  },
-  componentDidMount() {
-    this.content;
-    this.messages = this.props.messages || [];
+    dispatch(fetchMessages(roomID));
   },
   render() {
+    let content;
+    let messages = this.props.messages || [];
+
     if (this.props.currentRoom.id) {
-      if (this.props.currentRoom.id == this.props.myUsername.roomID) {
-        this.content = <MessagesContainer messages={this.messages} />
+      if (this.props.joinedRooms[this.props.currentRoom.id]) {
+        content = <MessagesContainer messages={messages} />
       }
       else {
-        this.content = <NewUserForm onUsernameSubmit={this.props.handleUsernameSubmit} roomID={this.props.currentRoom.id}/>
+        content = <NewUserForm onUsernameSubmit={this.props.handleUsernameSubmit} roomID={this.props.currentRoom.id}/>
       }
-    }
-    else {
-      this.content = <NewUserForm onUsernameSubmit={this.props.handleUsernameSubmit} />
     }
     return(
       <Column large={7} className='chatroom'>
-        <h5 style={{textAlign:'center'}}>{this.props.currentRoom.id || "No Room Selected"}</h5>
-        { this.content }
+        <h5 style={{textAlign:'center'}}>{this.props.currentRoom.id || "Click a Room To Join"}</h5>
+        { content }
         <ChatInput />
       </Column>
     )
@@ -58,6 +55,7 @@ CurrentRoom.propTypes = {
 const mapStateToProps = (state) => {
   return {
     currentRoom: state.session.currentRoom,
+    joinedRooms: state.session.joinedRooms,
     messages: state.CurrentRoom.messages,
     myUsername: state.CurrentRoom.myUsername
   }
@@ -67,7 +65,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     handleUsernameSubmit: (username, roomID) => {
       dispatch(setMyUsername(username));
-      dispatch(joinRoom(username, roomID))
+      dispatch(joinRoom(username, roomID));
+      dispatch(fetchMessages(roomID));
     }
   }
 }

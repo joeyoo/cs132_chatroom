@@ -5,17 +5,20 @@ import ClickableRoom from './ClickableRoom';
 import CreateRoomButton from './CreateRoomButton';
 
 import { RoomListActions } from '../../state/actionsIndex';
-const { fetchRoomsList } = RoomListActions;
+const { fetchRoomsList, requestPostRoom } = RoomListActions;
 
 const RoomList = React.createClass({
   componentDidMount() {
     this.props.dispatch(fetchRoomsList());
   },
+  handleCreateClick() {
+    this.props.dispatch(requestPostRoom());
+  },
   render() {
     return(
       <div>
         <h5 style={{textAlign:'center'}}>Live Rooms</h5>
-        <CreateRoomButton />
+        <CreateRoomButton onCreateClick={this.handleCreateClick}/>
         <ul className='menu vertical roomList'>
           {this.props.currentRooms.map(function(room) {
             return (
@@ -31,24 +34,15 @@ const RoomList = React.createClass({
 RoomList.propTypes = {
   currentRooms: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-    name: PropTypes.string,
     userCount: PropTypes.number
   }).isRequired).isRequired,
   dispatch: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {
-  if ( state.RoomList.currentRooms != ownProps.currentRooms ) {
-    return {
-      currentRooms: state.RoomList.currentRooms,
-      currentRoom: state.session.currentRoom
-    }
-  }
-  else {
-    return {
-      currentRooms: ownProps.currentRooms,
-      currentRoom: state.session.currentRoom
-    }
+  return {
+    currentRooms: state.RoomList.currentRooms,
+    currentRoom: state.session.currentRoom
   }
 }
 

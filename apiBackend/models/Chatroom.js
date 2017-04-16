@@ -1,5 +1,5 @@
 function Chatroom(currentIDs) {
-  this.id = generateID(currentIDs);
+  this.id = this.generateID(currentIDs);
 }
 
 Chatroom.prototype.generateID = function(currentIDs) {
