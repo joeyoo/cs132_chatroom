@@ -1,10 +1,11 @@
 import React, {PropTypes} from 'react';
+import Scroll, { animateScroll } from 'react-scroll';
 
 import Message from './Message';
 
 const MessagesContainer = React.createClass({
   componentDidMount() {
-    // scroll to bottom
+    animateScroll.scrollToBottom();
   },
   componentDidUpdate() {
     // scroll to bottom
