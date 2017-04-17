@@ -8,32 +8,41 @@ import NewUserForm from './NewUserForm';
 import ChatInput from './ChatInput';
 
 import { CurrentRoomActions, sessionActions } from '../../state/actionsIndex';
-const { fetchMessages, setMyUsername } = CurrentRoomActions;
+const { fetchMessages, postMessage, setMyUsername } = CurrentRoomActions;
 const { joinRoom } = sessionActions;
 
 const CurrentRoom = React.createClass({
   handleUsernameSubmit(username, roomID) {
-    dispatch(setMyUsername(username));
-    dispatch(joinRoom(username, roomID));
-    dispatch(fetchMessages(roomID));
+    this.props.dispatch(setMyUsername(username));
+    this.props.dispatch(joinRoom(username, roomID));
+    this.props.dispatch(fetchMessages(roomID));
+  },
+  handleMessageSubmit(message, roomID) {
+    this.props.dispatch(postMessage(message, roomID));
+    this.props.dispatch(fetchMessages(roomID));
   },
   render() {
-    let content;
+
+    let content, chatInput;
     let messages = this.props.messages || [];
 
     if (this.props.currentRoom.id) {
       if (this.props.joinedRooms[this.props.currentRoom.id]) {
         content = <MessagesContainer messages={messages} />
+        chatInput = <ChatInput onMessageSubmit={this.props.handleMessageSubmit} roomID={this.props.currentRoom.id}
+        username={this.props.myUsername}/>
       }
       else {
         content = <NewUserForm onUsernameSubmit={this.props.handleUsernameSubmit} roomID={this.props.currentRoom.id}/>
       }
     }
     return(
-      <Column large={7} className='chatroom'>
-        <h5 style={{textAlign:'center'}}>{this.props.currentRoom.id || "Click a Room To Join"}</h5>
+      <Column id='currentRoom' className='large-7'>
+        <h5 className='section-header'>
+          {this.props.currentRoom.id || "Click a Room To Join"}
+        </h5>
         { content }
-        <ChatInput />
+        { chatInput }
       </Column>
     )
   }
@@ -42,14 +51,7 @@ const CurrentRoom = React.createClass({
 const {shape, string, func, arrayOf, number} = PropTypes;
 CurrentRoom.propTypes = {
   currentRoom: shape({ id: string }),
-  dispatch: func.isRequired,
-  messages: arrayOf(shape({
-    id: number.isRequired,
-    body: string.isRequired,
-    sender: string.isRequired,
-    roomID: string.isRequired,
-    createdAt: string.isRequired
-  }))
+  dispatch: func.isRequired
 }
 
 const mapStateToProps = (state) => {
@@ -61,17 +63,17 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     handleUsernameSubmit: (username, roomID) => {
       dispatch(setMyUsername(username));
       dispatch(joinRoom(username, roomID));
       dispatch(fetchMessages(roomID));
+    },
+    handleMessageSubmit: (message, roomID) => {
+      dispatch(postMessage(message, roomID));
     }
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CurrentRoom);
+export default connect(mapStateToProps, mapDispatchToProps)(CurrentRoom);

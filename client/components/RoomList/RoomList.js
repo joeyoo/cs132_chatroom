@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
+import { Column } from 'react-foundation';
+
 import ClickableRoom from './ClickableRoom';
 import CreateRoomButton from './CreateRoomButton';
 
@@ -16,17 +18,17 @@ const RoomList = React.createClass({
   },
   render() {
     return(
-      <div>
-        <h5 style={{textAlign:'center'}}>Live Rooms</h5>
+      <Column id='roomList' className='large-2'>
+        <h5 className='section-header'>Live Rooms</h5>
         <CreateRoomButton onCreateClick={this.handleCreateClick}/>
-        <ul className='menu vertical roomList'>
+        <ul className='menu vertical'>
           {this.props.currentRooms.map(function(room) {
             return (
               <ClickableRoom {...room} key={room.id} />
             )
           })}
         </ul>
-      </div>
+      </Column>
     )
   }
 });

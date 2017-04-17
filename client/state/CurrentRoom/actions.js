@@ -23,12 +23,14 @@ import { CONSTANTS } from './index';
     }
   }
 
-  export const addMessage = (message, roomID) => {
+  export const addMessage = (message) => {
     return {
       type: CONSTANTS.ADD_MESSAGE,
       sender: message.sender,
       body: message.body,
-      roomID: roomID
+      roomID: message.room_id,
+      id: message.id,
+      createdAt: message.created_at
     }
   }
 
@@ -43,7 +45,9 @@ import { CONSTANTS } from './index';
         }
       })
       .then((res)=>{
-        dispatch(addMessage(message, roomID))
+        let message = res.data;
+
+        dispatch(addMessage(message));
       })
       .catch((error)=> console.error)
     }

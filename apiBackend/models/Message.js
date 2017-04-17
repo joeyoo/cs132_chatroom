@@ -1,4 +1,4 @@
-function Message(reqBody, reqParams) {
+function Message(reqParams, reqBody) {
   reqBody = reqBody || {
     sender: 'text',
     body: 'text'
@@ -7,7 +7,7 @@ function Message(reqBody, reqParams) {
     roomID: 'text'
   }
 
-  this.id = this.setID();
+  this.id = "";
   this.roomID = reqParams.roomID;
   this.sender = reqBody.sender;
   this.body = reqBody.body;
@@ -15,7 +15,7 @@ function Message(reqBody, reqParams) {
 }
 
 Message.prototype.setID = function(id) {
-  return id;
+  this.id = id;
 }
 
 Message.prototype.setCreatedAt = function(createdAt) {

@@ -6,7 +6,7 @@ exports.GET = function(req, res) {
   dbConnection.query(sql, function(error, data) {
     if (error) console.error(error);
     res.json(data.rows);
-    console.log(__filename, "\n", data.rows);
+    console.log(__filename, "\nGET chatrooms: ", data.rows);
   });
 };
 

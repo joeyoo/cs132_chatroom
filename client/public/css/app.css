@@ -9,32 +9,44 @@
   height: 10vh;
 }
 
-.chatroom {
-  border: solid 1px springgreen;
-}
-  .messagesContainer {
-    overflow-y: scroll;
-    max-height: 80vh;
-  }
-  .message {
+#main-content {
 
-  }
-  .message-username {
-    font-weight: bold;
-  }
-  textarea {
-    resize: none;
+} .section-header {
+    text-align:'center';
   }
 
-.details {
-  border: solid 1px springgreen;
-}
+  #roomList {
 
-.roomList {
-  border: solid 1px springgreen;
-  overflow-y: scroll;
-  max-height: 80vh;
-}
+  }
+    #roomList > ul {
+      border: solid 1px springgreen;
+      overflow-y: scroll;
+      max-height: 70vh;
+    }
+
+  #currentRoom {
+    border: solid 1px springgreen;
+  }
+    #messagesContainer {
+      overflow-y: scroll;
+      max-height: 70vh;
+    }
+    #chat-input {
+
+    }
+      #chat-input > textarea {
+        resize: none;
+      }
+    .message {
+
+    }
+    .message-username {
+      font-weight: bold;
+    }
+
+  #roomDetails {
+    border: solid 1px springgreen;
+  }
 
 #footer {
   background-color: springgreen;

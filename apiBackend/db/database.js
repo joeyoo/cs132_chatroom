@@ -2,7 +2,7 @@ var anyDB = require('any-db');
 
 var pool = anyDB.createPool('sqlite3://apiBackend/db/chatroom.db', {
   min: 2,
-  max: 20
+  max: 25
 })
 
 // Import database helper models
@@ -23,12 +23,15 @@ chatrooms.addColumn(new Column("id", "TEXT", "PRIMARY KEY"));
 chatrooms.addColumn(new Column("userCount", "INTEGER", "DEFAULT 0"));
 
 // Map models to Sqlite Database
-pool.query(messages.toSQL())
-  .on('error', console.error);
-pool.query(chatrooms.toSQL())
-  .on('error', console.error);
+pool.query(messages.toSQL(), function(err, data) {
+  console.log(messages.toSQL());
+  if (err) console.error;
+})
 
-// Import database seed function
-// require('./seed.js')(pool);
+pool.query(chatrooms.toSQL(), function(err, data) {
+  console.log(chatrooms.toSQL());
+  if (err) console.error;
+})
+
 
 module.exports = pool;

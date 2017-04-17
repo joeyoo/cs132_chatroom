@@ -7,7 +7,9 @@ const RoomList = (state = DEFAULT_STATE, action) => {
     case 'UPDATE_ROOMS_LIST':
       return {...state, currentRooms: action.currentRooms }
     case 'ADD_ROOM_TO_LIST':
-      return {...state, currentRooms: state.currentRooms.push(action.room) }
+      let currentRooms = state.currentRooms;
+      currentRooms.push(action.room);
+      return {...state, currentRooms: currentRooms }
     default:
       return state
   }

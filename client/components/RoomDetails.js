@@ -7,9 +7,9 @@ const RoomDetails = React.createClass({
   render() {
     let myUsername = this.props.joinedRooms[this.props.id];
     return(
-      <Column large={3}>
-        <h5 style={{textAlign:'center'}}>Room Details</h5>
-        <ul className='menu vertical details'>
+      <Column id='roomDetails' className='large-3'>
+        <h5 className='section-header'>Room Details</h5>
+        <ul className='menu vertical'>
           <li> id: {this.props.id}</li>
           <li> Me: {myUsername || ''}</li>
           <li> Other Users: </li>

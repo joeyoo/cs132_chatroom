@@ -11,23 +11,21 @@ import Footer from './Footer';
 class App extends Component {
   render() {
     return(
-      <Row large={12} id='app'>
+      <Row id='app' className='large-12'>
 
-        <Row large={12}>
+        <Row id='header' className='large-12'>
           <Header />
         </Row>
 
-        <Row large={12} id='main-content'>
-          <Column large={2}>
-            <RoomList/>
-          </Column>
+        <Row id='main-content' className='large-12'>
+          <RoomList/>
 
           <CurrentRoom />
 
           <RoomDetails />
         </Row>
 
-        <Row large={12} id="footer">
+        <Row id="footer" className='large-12'>
           <Footer />
         </Row>
 

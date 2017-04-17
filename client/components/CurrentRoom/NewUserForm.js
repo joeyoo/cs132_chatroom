@@ -16,6 +16,7 @@ class NewUserForm extends React.Component {
           <input type='text' name='username' />
         </label>
         <input type='submit' />
+
       </form>
     )
   }

@@ -31,7 +31,6 @@ import { CONSTANTS } from './index';
       axios.post('http://localhost:8080/api/POST/chatrooms')
         .then((res) => {
           dispatch(addRoomToList(res.data));
-          console.log(res.data);
         })
         .catch((error) => console.error)
     }
