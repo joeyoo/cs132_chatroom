@@ -15,11 +15,15 @@ const CurrentRoom = React.createClass({
   handleUsernameSubmit(username, roomID) {
     this.props.dispatch(setMyUsername(username));
     this.props.dispatch(joinRoom(username, roomID));
-    this.props.dispatch(fetchMessages(roomID));
   },
   handleMessageSubmit(message, roomID) {
     this.props.dispatch(postMessage(message, roomID));
+  },
+  fetchMessages(roomID) {
     this.props.dispatch(fetchMessages(roomID));
+  },
+  componentDidUpdate() {
+    this.props.fetchMessages(this.props.currentRoom.id);
   },
   render() {
 
@@ -55,11 +59,17 @@ CurrentRoom.propTypes = {
 }
 
 const mapStateToProps = (state) => {
+  let myUsername = state.CurrentRoom.myUsername;
+
+  if (state.session.joinedRooms[state.session.currentRoom.id]) {
+    myUsername = state.session.joinedRooms[state.session.currentRoom.id];
+  };
+
   return {
     currentRoom: state.session.currentRoom,
     joinedRooms: state.session.joinedRooms,
     messages: state.CurrentRoom.messages,
-    myUsername: state.CurrentRoom.myUsername
+    myUsername: myUsername
   }
 }
 
@@ -68,10 +78,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     handleUsernameSubmit: (username, roomID) => {
       dispatch(setMyUsername(username));
       dispatch(joinRoom(username, roomID));
-      dispatch(fetchMessages(roomID));
     },
     handleMessageSubmit: (message, roomID) => {
       dispatch(postMessage(message, roomID));
+    },
+    fetchMessages: (roomID) => {
+      dispatch(fetchMessages(roomID));
     }
   }
 }
