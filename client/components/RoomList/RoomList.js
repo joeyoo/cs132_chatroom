@@ -15,6 +15,7 @@ const RoomList = React.createClass({
   },
   handleCreateClick() {
     this.props.dispatch(requestPostRoom());
+    this.props.dispatch(fetchRoomsList());
   },
   render() {
     return(

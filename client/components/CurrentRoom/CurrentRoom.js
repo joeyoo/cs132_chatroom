@@ -22,8 +22,13 @@ const CurrentRoom = React.createClass({
   fetchMessages(roomID) {
     this.props.dispatch(fetchMessages(roomID));
   },
-  componentDidUpdate() {
-    this.props.fetchMessages(this.props.currentRoom.id);
+  componentDidMount() {
+    setInterval(()=> {
+      this.props.fetchMessages(this.props.currentRoom.id)
+    }, 5000);
+  },
+  componentDidUpdate(prevProps) {
+    clearInterval();
   },
   render() {
 
