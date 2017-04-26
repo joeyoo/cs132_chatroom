@@ -1,5 +1,9 @@
 # cs132_chatroom -> realtime
 
+
+TODO:
+1. replace ajax with socket events
+
 How to run:
   1. 'npm run dev-server' to run server
   2. 'npm run dev-client' to run client
