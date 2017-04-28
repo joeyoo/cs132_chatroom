@@ -18,7 +18,7 @@ const ClickableRoom = React.createClass({
           <a onClick={this.props.handleRoomClick}>{this.props.id}</a>
         </Column>
         <Column small={5} color={Colors.ALERT}>
-          <i className='fa fa-user' aria-hidden="true"></i> 1
+          <i className='fa fa-user' aria-hidden="true"></i> {this.props.userCount}
         </Column>
       </li>
     )

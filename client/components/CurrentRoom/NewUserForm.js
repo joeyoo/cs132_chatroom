@@ -1,4 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { sessionActions } from '../../state/actionsIndex';
+const {joinRoom} = sessionActions;
 
 class NewUserForm extends React.Component {
   constructor(props) {
@@ -7,7 +11,7 @@ class NewUserForm extends React.Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    this.props.onUsernameSubmit(event.currentTarget.username.value, this.props.roomID);
+    this.props.dispatch(joinRoom(event.currentTarget.username.value, this.props.roomID));
   }
   render() {
     return(
@@ -22,4 +26,10 @@ class NewUserForm extends React.Component {
   }
 };
 
-export default NewUserForm;
+const mapStateToProps = (state) => {
+  return {
+    roomID: state.session.currentRoom.id
+  }
+}
+
+export default connect(mapStateToProps)(NewUserForm);

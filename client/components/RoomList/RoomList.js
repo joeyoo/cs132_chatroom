@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import {socket} from '../App';
 
 import { Column } from 'react-foundation';
 
@@ -7,15 +8,16 @@ import ClickableRoom from './ClickableRoom';
 import CreateRoomButton from './CreateRoomButton';
 
 import { RoomListActions } from '../../state/actionsIndex';
-const { fetchRoomsList, requestPostRoom } = RoomListActions;
+const { updateRoomsList } = RoomListActions;
 
 const RoomList = React.createClass({
   componentDidMount() {
-    this.props.dispatch(fetchRoomsList());
+    socket.on('chatrooms', (chatrooms) => {
+      this.props.dispatch(updateRoomsList(chatrooms));
+    });
   },
   handleCreateClick() {
-    this.props.dispatch(requestPostRoom());
-    this.props.dispatch(fetchRoomsList());
+    socket.emit('createRoom');
   },
   render() {
     return(
@@ -25,7 +27,7 @@ const RoomList = React.createClass({
         <ul className='menu vertical'>
           {this.props.currentRooms.map(function(room) {
             return (
-              <ClickableRoom {...room} key={room.id} />
+              <ClickableRoom {...room} key={room.id} userCount={1}/>
             )
           })}
         </ul>

@@ -1,7 +1,6 @@
 const DEFAULT_STATE = {
   messages: [],
   users: [],
-  messageIncoming: false,
   myUsername: ''
 }
 
@@ -14,15 +13,12 @@ const CurrentRoom = (state = DEFAULT_STATE, action) => {
     case 'SET_MY_USERNAME':
       return {...state, myUsername: action.username}
     case 'ADD_MESSAGE':
-      let messages = state.messages;
-      messages.push({
+      return {...state, messages: [...state.messages, {
         sender: action.sender,
         body: action.body,
         roomID: action.roomID,
-        id: action.id,
-        createdAt: action.createdAt
-      });
-      return {...state, messages: messages}
+        id: action.id
+      }]}
     default:
       return state;
   }

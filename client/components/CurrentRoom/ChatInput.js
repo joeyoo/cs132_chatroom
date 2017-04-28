@@ -1,6 +1,9 @@
 import React from 'react';
-
+import {connect} from 'react-redux';
 import { Link } from 'react-foundation';
+
+import { CurrentRoomActions } from '../../state/actionsIndex';
+const { addMessage } = CurrentRoomActions;
 
 class ChatInput extends React.Component {
   constructor(props) {

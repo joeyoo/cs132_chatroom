@@ -11,17 +11,22 @@ exports.GET = function(req, res) {
 };
 
 exports.POST = function(req, res) {
+  var currentIDs = [];
 
-var currentIDs = [];
-  dbConnection.query("SELECT id FROM chatrooms;", function(err,data) {
-    if (err) return console.error(err);
-    currentIDs = data;
-  });
+  dbConnection.query("SELECT id FROM chatrooms;")
+    .on('error', console.error)
+    .on('data', function(row){
+      currentIDs.push(row);
+    })
+    .on('end', function() {
+      var chatroom = new Chatroom(currentIDs);
 
-var sql = "INSERT INTO chatrooms (id) VALUES ($1);";
-var chatroom = new Chatroom(currentIDs);
-  dbConnection.query(sql, [chatroom.id], function(err,data) {
-    if (err) console.error;
-    res.json(data);
-  });
+      dbConnection.query("INSERT INTO chatrooms (id) VALUES ($1);", [chatroom.id], function(err,data) {
+        if (err) console.error;
+        res.json(data);
+        console.log(data);
+      });
+
+    });
+
 }

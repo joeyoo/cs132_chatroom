@@ -16,12 +16,11 @@
   }
 
   #roomList {
-
   }
     #roomList > ul {
       border: solid 1px springgreen;
       overflow-y: scroll;
-      max-height: 70vh;
+      height: 500px;
     }
 
   #currentRoom {
@@ -29,7 +28,7 @@
   }
     #messagesContainer {
       overflow-y: scroll;
-      max-height: 70vh;
+      height: 500px;
     }
     #chat-input {
 
@@ -46,6 +45,7 @@
 
   #roomDetails {
     border: solid 1px springgreen;
+    height: 500px;
   }
 
 #footer {

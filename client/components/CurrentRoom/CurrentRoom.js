@@ -1,61 +1,58 @@
 import React, {Component, PropTypes} from 'react';
 import {Column} from 'react-foundation';
-
 import {connect} from 'react-redux';
+import {socket} from '../App';
 
 import MessagesContainer from './MessagesContainer';
-import NewUserForm from './NewUserForm';
 import ChatInput from './ChatInput';
 
-import { CurrentRoomActions, sessionActions } from '../../state/actionsIndex';
-const { fetchMessages, postMessage, setMyUsername } = CurrentRoomActions;
-const { joinRoom } = sessionActions;
+import { CurrentRoomActions } from '../../state/actionsIndex';
+const { updateMessages, addMessage } = CurrentRoomActions;
 
-const CurrentRoom = React.createClass({
-  handleUsernameSubmit(username, roomID) {
-    this.props.dispatch(setMyUsername(username));
-    this.props.dispatch(joinRoom(username, roomID));
-  },
-  handleMessageSubmit(message, roomID) {
-    this.props.dispatch(postMessage(message, roomID));
-  },
-  fetchMessages(roomID) {
-    this.props.dispatch(fetchMessages(roomID));
-  },
+
+class CurrentRoom extends Component {
+  constructor(props) {
+    super(props);
+    this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
+    this.socket = socket;
+  }
+
   componentDidMount() {
-    setInterval(()=> {
-      this.props.fetchMessages(this.props.currentRoom.id)
-    }, 5000);
-  },
-  componentDidUpdate(prevProps) {
-    clearInterval();
-  },
-  render() {
+    this.socket.emit('joinRoom', {
+      roomID: this.props.currentRoom.id,
+      username: this.props.myUsername
+    });
+    this.socket.on('getMessages', (messages) => {
+      this.props.dispatch(updateMessages(messages));
+    });
+    this.socket.on('message', (message) => {
+      this.props.dispatch(addMessage(message));
+    });
+  }
 
-    let content, chatInput;
+  handleMessageSubmit(message, roomID) {
+    this.socket.emit('message', {
+      sender: message.sender,
+      body: message.body,
+      roomID: roomID
+    });
+  }
+
+  render() {
     let messages = this.props.messages || [];
 
-    if (this.props.currentRoom.id) {
-      if (this.props.joinedRooms[this.props.currentRoom.id]) {
-        content = <MessagesContainer messages={messages} />
-        chatInput = <ChatInput onMessageSubmit={this.props.handleMessageSubmit} roomID={this.props.currentRoom.id}
-        username={this.props.myUsername}/>
-      }
-      else {
-        content = <NewUserForm onUsernameSubmit={this.props.handleUsernameSubmit} roomID={this.props.currentRoom.id}/>
-      }
-    }
     return(
       <Column id='currentRoom' className='large-7'>
         <h5 className='section-header'>
           {this.props.currentRoom.id || "Click a Room To Join"}
         </h5>
-        { content }
-        { chatInput }
+        <MessagesContainer messages={messages} />
+        <ChatInput onMessageSubmit={this.handleMessageSubmit} roomID={this.props.currentRoom.id}
+        username={this.props.myUsername}/>
       </Column>
     )
   }
-});
+};
 
 const {shape, string, func, arrayOf, number} = PropTypes;
 CurrentRoom.propTypes = {
@@ -78,19 +75,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    handleUsernameSubmit: (username, roomID) => {
-      dispatch(setMyUsername(username));
-      dispatch(joinRoom(username, roomID));
-    },
-    handleMessageSubmit: (message, roomID) => {
-      dispatch(postMessage(message, roomID));
-    },
-    fetchMessages: (roomID) => {
-      dispatch(fetchMessages(roomID));
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CurrentRoom);
+export default connect(mapStateToProps)(CurrentRoom);
