@@ -10,27 +10,33 @@ var db = require('./db/database.js');
 var Message = require('./models/Message.js');
 var Chatroom = require('./models/Chatroom.js');
 
+// initialize server/listeners
 var app = express();
   app.use([cors(), bodyParser.json()]);
 var server = http.createServer(app);
 var io = socket_io.listen(server);
+
 
 var ROOMS = {};
 /*
   ROOMS = {
     [roomId]: {
       users: {
-        [username]: NULL
+        [socketId]: [username]
       },
-      userCount: INTEGER
+      userCount: [number]
     }
   }
 */
 
 io.sockets.on('connection', function(socket) {
-console.log("CLIENT: ", socket.id, " connected");
+console.log("client (", socket.id, ") CONNECTED");
 
-// send current chatrooms to connected client
+  socket.joinedRooms = []; // will use to map through ROOMS and delete the client's username from each roomId, as well as decrement userCount by 1
+
+/*
+  QUERY chatrooms from db and emit to newly connected client
+*/
   db.query("SELECT * FROM chatrooms;", function(err, data) {
     if (err) console.error(err);
     var queriedRooms = data.rows;
@@ -54,21 +60,17 @@ console.log("CLIENT: ", socket.id, " connected");
 
     }
 
-    socket.chatrooms = [];
+    var chatrooms = makeChatrooms(ROOMS, Chatroom);
 
-    for (var id in ROOMS) {
-      socket.chatrooms.push(new Chatroom({id: id, users: ROOMS[id].users}))
-    }
-
-    console.log(socket.chatrooms);
-
-    socket.emit('chatrooms', socket.chatrooms);
+    socket.emit('chatrooms', chatrooms);
   });
 
-// listen for create room
+/*
+  generate unique id based on current ids and insert into db, then emit to all clients
+*/
   socket.on('createRoom', function() {
-
     var currentIDs = [];
+
     db.query("SELECT id FROM chatrooms;")
       .on('error', console.error)
       .on('data', function(row){
@@ -79,15 +81,14 @@ console.log("CLIENT: ", socket.id, " connected");
         chatroom.generateID(currentIDs);
 
         db.query("INSERT INTO chatrooms (id) VALUES ($1);", [chatroom.id], function(r) {
-          socket.chatrooms.push(chatroom);
-
 
           ROOMS[chatroom.id] = {
-            users: {},
-            userCount: 0
+            users: chatroom.users,
+            userCount: chatroom.userCount
           };
 
-          io.sockets.emit('chatrooms', socket.chatrooms);
+          var chatrooms = makeChatrooms(ROOMS, Chatroom);
+          io.sockets.emit('chatrooms', chatrooms);
         });
 
       });
@@ -95,37 +96,30 @@ console.log("CLIENT: ", socket.id, " connected");
 
   });
 
-// listen for join room
+/*
+    JOIN ROOM
+*/
   socket.on('joinRoom', function(data) {
     socket.join(data.roomID);
 
     ROOMS[data.roomID].users[socket.id] = data.username;
     ROOMS[data.roomID].userCount += 1;
 
-console.log(socket.id, "joined room", data.roomID, "as: " + data.username);
+    socket.joinedRooms.push(data.roomID);
+
+console.log("client (" + socket.id + ") JOINED (" + data.roomID + ") AS (" + data.username + ")");
 
       db.query("SELECT * FROM messages WHERE room_id=$1;", [data.roomID], function(error, d) {
         if (error) console.error;
 
         socket.emit('getMessages', d.rows);
 
-console.log(ROOMS);
-
         io.sockets.emit('getUsersOfRoom', objToArray(ROOMS[data.roomID].users));
 
-        io.sockets.emit('chatrooms', socket.chatrooms);
+        var chatrooms = makeChatrooms(ROOMS, Chatroom);
+        io.sockets.emit('chatrooms', chatrooms);
       })
   });
-
-// listen for leave room
-  socket.on('leaveRoom', function(data) {
-    socket.leave(data.roomID);
-
-console.log(socket.id, "left room: ", data.roomID);
-
-    delete ROOMS[data.roomID].users[data.username];
-    ROOMS[data.roomID].userCount -= 1;
-  })
 
 // listen for new message
   socket.on('message', function(message) {
@@ -148,7 +142,16 @@ console.log(socket.id, "left room: ", data.roomID);
 
 // listen for client disconnect
   socket.on('disconnect', function() {
-    console.log(socket.id + " disconnected")
+    console.log("client (" + socket.id + ") DISCONNECTED");
+
+    socket.joinedRooms.forEach(function(roomID) {
+      delete ROOMS[roomID].users[socket.id];
+      ROOMS[roomID].userCount -= 1;
+    });
+
+    var chatrooms = makeChatrooms(ROOMS, Chatroom);
+
+    io.sockets.emit('chatrooms', chatrooms)
   });
 
 });
@@ -158,11 +161,21 @@ server.listen(8080, function() {
   console.log('Listening on port 8080');
 });
 
-
-var objToArray = function(obj) {
-  var arr = [];
-  for (var key in obj) {
-    arr.push(key);
+/*
+  helper functions
+*/
+  var objToArray = function(obj) {
+    var arr = [];
+    for (var key in obj) {
+      arr.push(key);
+    };
+    return arr;
   };
-  return arr;
-};
+
+  var makeChatrooms = function(ROOMS, Chatroom) {
+    var chatrooms = [];
+    for (var id in ROOMS) {
+      chatrooms.push(new Chatroom({id: id, users: ROOMS[id].users}))
+    }
+    return chatrooms;
+  }

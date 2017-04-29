@@ -2,7 +2,8 @@
 
 
 TODO:
-1. replace ajax with socket events
+1. return usernames and not socket.id in userlist(RoomDetails)
+2. filter out client's own username/id in userlist(RoomDetails)
 
 How to run:
   1. 'npm run dev-server' to run server
@@ -11,8 +12,7 @@ How to run:
 
 ### Database Schema:
     Chatroom {
-      id: text,              // generated alphanumeric id
-      userCount: integer     // to be implemented in realtime
+      id: text              // generated alphanumeric id
     }
 
     Message {
