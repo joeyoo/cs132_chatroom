@@ -1,6 +1,5 @@
-import * as CONSTANTS from './constants';
 import * as Actions from './actions';
 import Reducer from './reducer';
 
-export {CONSTANTS, Actions};
+export {Actions};
 export default Reducer;

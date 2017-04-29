@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import { Column, Colors } from 'react-foundation';
 
 import { sessionActions } from '../../state/actionsIndex';
-const {setCurrentRoom} = sessionActions;
+const {selectRoom} = sessionActions;
 
 const ClickableRoom = React.createClass({
   handleRoomClick(event) {
     event.preventDefault();
-    this.props.dispatch(setCurrentRoom(this.props));
+    this.props.dispatch(selectRoom(this.props));
   },
   render() {
     return(
@@ -35,7 +35,7 @@ ClickableRoom.propTypes = {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     handleRoomClick: () => {
-      dispatch(setCurrentRoom(ownProps))
+      dispatch(selectRoom(ownProps))
     }
   }
 }

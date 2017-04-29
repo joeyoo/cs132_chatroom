@@ -2,13 +2,22 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-
+import io from 'socket.io-client';
 // Import css
 import './public/css/app.css';
-
+// Import App Component
 import App from './components/App';
-
-import store from './state/rootReducer'; // import Redux store
+// initialize and export client socket (in order to not initilize new client socket connections)
+export const socket = io("http://localhost:8080");
+// import redux store
+import store from './state/rootReducer';
+// import some redux actions to update store from socket events
+import {CurrentRoomActions} from './state/actionsIndex';
+const {updateUsers} = CurrentRoomActions;
+// socket event listeners
+socket.on('getUsersOfRoom', function(users) {
+  store.dispatch(updateUsers(users)); // this will update the user list of the current room
+});
 
 render(
   <Provider store={store}>

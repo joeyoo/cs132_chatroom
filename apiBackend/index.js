@@ -15,38 +15,79 @@ var app = express();
 var server = http.createServer(app);
 var io = socket_io.listen(server);
 
-var userCounts = {}; // key: roomID, value: usercount
+var ROOMS = {};
+/*
+  ROOMS = {
+    [roomId]: {
+      users: {
+        [username]: NULL
+      },
+      userCount: INTEGER
+    }
+  }
+*/
 
 io.sockets.on('connection', function(socket) {
-  console.log(socket.id + "  connected");
+console.log("CLIENT: ", socket.id, " connected");
 
 // send current chatrooms to connected client
   db.query("SELECT * FROM chatrooms;", function(err, data) {
     if (err) console.error(err);
+    var queriedRooms = data.rows;
 
-    var chatrooms = data.rows;
-    socket.chatrooms = data.rows;
+    var socketRooms = io.sockets.adapter.rooms;
 
-    socket.emit('chatrooms', chatrooms);
+    for (var i = 0; i < queriedRooms.length; i++) {
+      var chatroomID = queriedRooms[i].id;
+
+      var users = {}, userCount = 0;
+
+      if (socketRooms[chatroomID]) {
+        userCount = socketRooms[chatroomID].length;
+        users = socketRooms[chatroomID].sockets;
+      }
+
+      ROOMS[chatroomID] = {
+        users: users,
+        userCount: userCount
+      };
+
+    }
+
+    socket.chatrooms = [];
+
+    for (var id in ROOMS) {
+      socket.chatrooms.push(new Chatroom({id: id, users: ROOMS[id].users}))
+    }
+
+    console.log(socket.chatrooms);
+
+    socket.emit('chatrooms', socket.chatrooms);
   });
 
 // listen for create room
   socket.on('createRoom', function() {
-    var currentIDs = [];
 
+    var currentIDs = [];
     db.query("SELECT id FROM chatrooms;")
       .on('error', console.error)
       .on('data', function(row){
         currentIDs.push(row);
       })
       .on('end', function() {
-        var chatroom = new Chatroom(currentIDs);
+        var chatroom = new Chatroom({});
+        chatroom.generateID(currentIDs);
 
-        db.query("INSERT INTO chatrooms (id) VALUES ($1);", [chatroom.id], function(response) {
+        db.query("INSERT INTO chatrooms (id) VALUES ($1);", [chatroom.id], function(r) {
           socket.chatrooms.push(chatroom);
-          io.sockets.emit('chatrooms', socket.chatrooms);
 
-          userCounts[chatroom.id] = 0;
+
+          ROOMS[chatroom.id] = {
+            users: {},
+            userCount: 0
+          };
+
+          io.sockets.emit('chatrooms', socket.chatrooms);
         });
 
       });
@@ -57,32 +98,38 @@ io.sockets.on('connection', function(socket) {
 // listen for join room
   socket.on('joinRoom', function(data) {
     socket.join(data.roomID);
-    socket.username = data.username;
 
-    userCounts[data.roomID] += 1;
+    ROOMS[data.roomID].users[socket.id] = data.username;
+    ROOMS[data.roomID].userCount += 1;
 
-      db.query("SELECT * FROM messages WHERE room_id=$1;", [data.roomID], function(error, data) {
+console.log(socket.id, "joined room", data.roomID, "as: " + data.username);
+
+      db.query("SELECT * FROM messages WHERE room_id=$1;", [data.roomID], function(error, d) {
         if (error) console.error;
 
-        socket.emit('getMessages', data.rows);
+        socket.emit('getMessages', d.rows);
+
+console.log(ROOMS);
+
+        io.sockets.emit('getUsersOfRoom', objToArray(ROOMS[data.roomID].users));
+
+        io.sockets.emit('chatrooms', socket.chatrooms);
       })
-
-
-    // socket.in(data.roomID).emit('userJoined', data);
   });
 
 // listen for leave room
   socket.on('leaveRoom', function(data) {
     socket.leave(data.roomID);
 
-    userCounts[roomID] -= 1;
+console.log(socket.id, "left room: ", data.roomID);
+
+    delete ROOMS[data.roomID].users[data.username];
+    ROOMS[data.roomID].userCount -= 1;
   })
 
 // listen for new message
   socket.on('message', function(message) {
-    var sql = "INSERT INTO messages (sender,room_id,body) VALUES ($1,$2,$3);"
-
-      db.query(sql, [message.sender,message.roomID,message.body], function(error, data) {
+      db.query("INSERT INTO messages (sender,room_id,body) VALUES ($1,$2,$3);", [message.sender,message.roomID,message.body], function(error, data) {
         if (error) console.error;
 
         message.id = data.lastInsertId;
@@ -95,7 +142,7 @@ io.sockets.on('connection', function(socket) {
 
 // listen for username create
   socket.on('createUsername', function(data){
-    socket.username = data.username;
+
     socket.to(data.room).emit('newUsername', data);
   });
 
@@ -110,3 +157,12 @@ io.sockets.on('connection', function(socket) {
 server.listen(8080, function() {
   console.log('Listening on port 8080');
 });
+
+
+var objToArray = function(obj) {
+  var arr = [];
+  for (var key in obj) {
+    arr.push(key);
+  };
+  return arr;
+};

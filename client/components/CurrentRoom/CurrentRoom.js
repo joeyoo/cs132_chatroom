@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Column} from 'react-foundation';
 import {connect} from 'react-redux';
-import {socket} from '../App';
+import {socket} from '../../index';
 
 import MessagesContainer from './MessagesContainer';
 import ChatInput from './ChatInput';
@@ -19,7 +19,7 @@ class CurrentRoom extends Component {
 
   componentDidMount() {
     this.socket.emit('joinRoom', {
-      roomID: this.props.currentRoom.id,
+      roomID: this.props.selectedRoom.id,
       username: this.props.myUsername
     });
     this.socket.on('getMessages', (messages) => {
@@ -29,6 +29,10 @@ class CurrentRoom extends Component {
       this.props.dispatch(addMessage(message));
     });
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   if (this.props.selectedRoom)
+  // }
 
   handleMessageSubmit(message, roomID) {
     this.socket.emit('message', {
@@ -42,12 +46,12 @@ class CurrentRoom extends Component {
     let messages = this.props.messages || [];
 
     return(
-      <Column id='currentRoom' className='large-7'>
+      <Column id='selectedRoom' className='large-7'>
         <h5 className='section-header'>
-          {this.props.currentRoom.id || "Click a Room To Join"}
+          {this.props.selectedRoom.id || "Click a Room To Join"}
         </h5>
         <MessagesContainer messages={messages} />
-        <ChatInput onMessageSubmit={this.handleMessageSubmit} roomID={this.props.currentRoom.id}
+        <ChatInput onMessageSubmit={this.handleMessageSubmit} roomID={this.props.selectedRoom.id}
         username={this.props.myUsername}/>
       </Column>
     )
@@ -56,19 +60,19 @@ class CurrentRoom extends Component {
 
 const {shape, string, func, arrayOf, number} = PropTypes;
 CurrentRoom.propTypes = {
-  currentRoom: shape({ id: string }),
+  selectedRoom: shape({ id: string }),
   dispatch: func.isRequired
 }
 
 const mapStateToProps = (state) => {
   let myUsername = state.CurrentRoom.myUsername;
 
-  if (state.session.joinedRooms[state.session.currentRoom.id]) {
-    myUsername = state.session.joinedRooms[state.session.currentRoom.id];
+  if (state.session.joinedRooms[state.session.selectedRoom.id]) {
+    myUsername = state.session.joinedRooms[state.session.selectedRoom.id];
   };
 
   return {
-    currentRoom: state.session.currentRoom,
+    selectedRoom: state.session.selectedRoom,
     joinedRooms: state.session.joinedRooms,
     messages: state.CurrentRoom.messages,
     myUsername: myUsername

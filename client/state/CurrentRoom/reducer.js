@@ -6,6 +6,8 @@ const DEFAULT_STATE = {
 
 const CurrentRoom = (state = DEFAULT_STATE, action) => {
   switch(action.type){
+    case 'UPDATE_USERS':
+      return {...state, users: action.users}
     case 'UPDATE_MESSAGES':
       return {...state, messages: action.messages}
     case 'MESSAGE_INCOMING':

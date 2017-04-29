@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import {socket} from '../App';
+import {socket} from '../../index';
 
 import { Column } from 'react-foundation';
 
@@ -27,7 +27,7 @@ const RoomList = React.createClass({
         <ul className='menu vertical'>
           {this.props.currentRooms.map(function(room) {
             return (
-              <ClickableRoom {...room} key={room.id} userCount={1}/>
+              <ClickableRoom {...room} key={room.id} />
             )
           })}
         </ul>
@@ -47,7 +47,7 @@ RoomList.propTypes = {
 const mapStateToProps = (state, ownProps) => {
   return {
     currentRooms: state.RoomList.currentRooms,
-    currentRoom: state.session.currentRoom
+    selectedRoom: state.session.selectedRoom
   }
 }
 

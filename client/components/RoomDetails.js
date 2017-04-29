@@ -13,7 +13,7 @@ const RoomDetails = React.createClass({
           <li> id: {this.props.id}</li>
           <li> Me: {myUsername || ''}</li>
           <li> Other Users: </li>
-          {this.props.users.map((user)=>{return(<li>{user.username}</li>)})}
+          {this.props.users.map((user)=>{return(<li>{user}</li>)})}
 
         </ul>
 
@@ -31,7 +31,7 @@ RoomDetails.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    id: state.session.currentRoom.id,
+    id: state.session.selectedRoom.id,
     users: state.CurrentRoom.users,
     joinedRooms: state.session.joinedRooms
   }

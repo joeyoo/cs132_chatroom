@@ -23,12 +23,10 @@ chatrooms.addColumn(new Column("id", "TEXT", "PRIMARY KEY"));
 
 // Map models to Sqlite Database
 pool.query(messages.toSQL(), function(err, data) {
-  console.log(messages.toSQL());
   if (err) console.error;
 })
 
 pool.query(chatrooms.toSQL(), function(err, data) {
-  console.log(chatrooms.toSQL());
   if (err) console.error;
 })
 

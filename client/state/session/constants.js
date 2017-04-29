@@ -1,1 +1,0 @@
-export const SET_CURRENT_ROOM = 'SET_CURRENT_ROOM';

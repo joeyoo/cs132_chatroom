@@ -23,7 +23,7 @@
       height: 500px;
     }
 
-  #currentRoom {
+  #selectedRoom {
     border: solid 1px springgreen;
   }
     #messagesContainer {

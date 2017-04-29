@@ -28,7 +28,7 @@ class NewUserForm extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    roomID: state.session.currentRoom.id
+    roomID: state.session.selectedRoom.id
   }
 }
 

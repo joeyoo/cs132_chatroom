@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import Foundation, {Row, Column} from 'react-foundation';
 import {connect} from 'react-redux';
-import io from 'socket.io-client';
-
-export const socket = io("http://localhost:8080");
+import {socket} from '../index';
 
 // Import components //
 import Header from './Header';
@@ -13,9 +11,6 @@ import NewUserForm from './CurrentRoom/NewUserForm';
 import RoomDetails from './RoomDetails';
 import Footer from './Footer';
 
-import { sessionActions } from '../state/actionsIndex';
-const { joinRoom } = sessionActions;
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -23,12 +18,12 @@ class App extends Component {
   }
 
   render() {
-    if (this.props.currentRoom.id) {
-      if (this.props.joinedRooms[this.props.currentRoom.id]) {
+    if (this.props.selectedRoom.id) {
+      if (this.props.joinedRooms[this.props.selectedRoom.id]) {
         this.content = <CurrentRoom />
       }
       else {
-        this.content = <NewUserForm roomID={this.props.currentRoom.id}/>
+        this.content = <NewUserForm roomID={this.props.selectedRoom.id}/>
       }
     }
 
@@ -59,7 +54,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    currentRoom: state.session.currentRoom,
+    selectedRoom: state.session.selectedRoom,
     joinedRooms: state.session.joinedRooms
   }
 }

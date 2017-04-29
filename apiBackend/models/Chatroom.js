@@ -1,5 +1,11 @@
-function Chatroom(currentIDs) {
-  this.id = this.generateID(currentIDs);
+function Chatroom(params) {
+  this.id = params.id || '';
+  this.users = params.users || {};
+  this.userCount = params.userCount || this.userCount();
+}
+
+Chatroom.prototype.userCount = function() {
+  return Object.keys(this.users).length;
 }
 
 Chatroom.prototype.generateID = function(currentIDs) {
@@ -37,7 +43,7 @@ Chatroom.prototype.generateID = function(currentIDs) {
 
 
   if (uniqueID) {
-    return uniqueID
+    this.id = uniqueID;
   }
   else {
     this.generateID(currentIDs);
