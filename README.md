@@ -1,6 +1,6 @@
 # cs132_chatroom -> realtime
 
-Please ask llu@cs.brown.edu if you have trouble running the app. He graded my chatroom assignment before this and got it to work w/ babel.
+Please ask llu3@cs.brown.edu if you have trouble running the app. He graded my chatroom assignment before this and got it to work w/ babel.
 
 Changes (i can remember right now) from chatrooms:
   - No longer need 'controllers' directory as no GET/POST requests are being made other than requesting the root '/'
