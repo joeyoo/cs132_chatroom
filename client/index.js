@@ -14,8 +14,9 @@ import store from './state/rootReducer';
 // import some redux actions to update store from socket events
 import {CurrentRoomActions} from './state/actionsIndex';
 const {updateUsers} = CurrentRoomActions;
+
 // socket event listeners
-socket.on('getUsersOfRoom', function(users) {
+socket.on('usersOfRoom', function(users) {
   store.dispatch(updateUsers(users)); // this will update the user list of the current room
 });
 

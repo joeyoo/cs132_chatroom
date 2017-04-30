@@ -6,15 +6,17 @@ import { connect } from 'react-redux';
 const RoomDetails = React.createClass({
   render() {
     let myUsername = this.props.joinedRooms[this.props.id];
+
+    let everyoneButMe = this.props.users.filter((user)=>{return myUsername != user.username});
+
     return(
       <Column id='roomDetails' className='large-3'>
         <h5 className='section-header'>Room Details</h5>
         <ul className='menu vertical'>
           <li> id: {this.props.id}</li>
-          <li> Me: {myUsername || ''}</li>
-          <li> Other Users: </li>
-          {this.props.users.map((user)=>{return(<li>{user}</li>)})}
-
+          <li> Users: </li>
+          <li>{myUsername}</li>
+          {everyoneButMe.map((user)=>{return(<li>{user.username}</li>)})}
         </ul>
 
       </Column>
@@ -26,7 +28,8 @@ RoomDetails.propTypes = {
   id: PropTypes.string,
   users: PropTypes.arrayOf(PropTypes.shape({
     username: PropTypes.string
-  }))
+  })),
+  socketId: PropTypes.string
 }
 
 const mapStateToProps = (state) => {

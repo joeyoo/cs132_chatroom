@@ -1,11 +1,14 @@
 const DEFAULT_STATE = {
   messages: [],
   users: [],
-  myUsername: ''
+  myUsername: '',
+  id: ''
 }
 
 const CurrentRoom = (state = DEFAULT_STATE, action) => {
   switch(action.type){
+    case 'SET_CURRENT_ROOM_ID':
+      return {...state, id: action.id}
     case 'UPDATE_USERS':
       return {...state, users: action.users}
     case 'UPDATE_MESSAGES':

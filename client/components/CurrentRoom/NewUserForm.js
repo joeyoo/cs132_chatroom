@@ -1,8 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { socket } from '../../index';
+import {Column} from 'react-foundation';
 
-import { sessionActions } from '../../state/actionsIndex';
+import { sessionActions, CurrentRoomActions } from '../../state/actionsIndex';
 const {joinRoom} = sessionActions;
+const {setCurrentRoomId, setMyUsername} = CurrentRoomActions;
 
 class NewUserForm extends React.Component {
   constructor(props) {
@@ -11,17 +14,31 @@ class NewUserForm extends React.Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    this.props.dispatch(joinRoom(event.currentTarget.username.value, this.props.roomID));
+    const userData = {
+      username: event.currentTarget.username.value,
+      roomID: this.props.roomID
+    };
+    socket.emit('createUsername', userData, (confirmedData)=>{
+      const { username, roomID } = confirmedData;
+
+      this.props.dispatch(joinRoom(username, roomID));
+      this.props.dispatch(setCurrentRoomId(roomID));
+      this.props.dispatch(setMyUsername(username));
+
+      socket.emit('usernameCreated', confirmedData);
+    });
   }
   render() {
     return(
-      <form onSubmit={this.handleSubmit}>
-        <label> Before you can start talking to yourself, you need to create a username:
-          <input type='text' name='username' />
-        </label>
-        <input type='submit' />
+      <Column id='selectedRoom' className='large-7'>
+        <form onSubmit={this.handleSubmit}>
+          <label> Before you can start talking to yourself, you need to create a username:
+            <input type='text' name='username' />
+          </label>
+          <input type='submit' />
 
-      </form>
+        </form>
+      </Column>
     )
   }
 };

@@ -61,7 +61,6 @@ console.log("client (", socket.id, ") CONNECTED");
     }
 
     var chatrooms = makeChatrooms(ROOMS, Chatroom);
-
     socket.emit('chatrooms', chatrooms);
   });
 
@@ -114,7 +113,8 @@ console.log("client (" + socket.id + ") JOINED (" + data.roomID + ") AS (" + dat
 
         socket.emit('getMessages', d.rows);
 
-        io.sockets.emit('getUsersOfRoom', objToArray(ROOMS[data.roomID].users));
+        var roomUsers = makeUsers(ROOMS[data.roomID].users);
+        io.in(data.roomID).emit('usersOfRoom', roomUsers);
 
         var chatrooms = makeChatrooms(ROOMS, Chatroom);
         io.sockets.emit('chatrooms', chatrooms);
@@ -135,24 +135,57 @@ console.log("client (" + socket.id + ") JOINED (" + data.roomID + ") AS (" + dat
   });
 
 // listen for username create
-  socket.on('createUsername', function(data){
+  socket.on('createUsername', function(userData, cb) {
+    userData.socketId = socket.id;
 
-    socket.to(data.room).emit('newUsername', data);
+    cb(userData); // back to client
+  });
+// after 'createUsername', the callback(cb()) will trigger the client(NewUserForm.js) to emit 'usernameCreated' to which the server has a listener(below)
+// thus we associate the client id with the correct username for everyone in the room
+  socket.on('usernameCreated', function(userData) {
+    ROOMS[userData.roomID].users[userData.socketId] = userData.username; // updates the ROOMS object's [roomID] with { [socket.id]:[username] }
+console.log("userData: ", userData );
+console.log("ROOMS AFTER usernameCreated (START)\n", ROOMS, "\n(END)")
+
+    var roomUsers = makeUsers(ROOMS[userData.roomID].users);
+    io.in(userData.roomID).emit('usersOfRoom', roomUsers);
+
+console.log("roomUsers: \n", roomUsers, "\n")
   });
 
 // listen for client disconnect
   socket.on('disconnect', function() {
-    console.log("client (" + socket.id + ") DISCONNECTED");
+console.log("client (" + socket.id + ") DISCONNECTED");
 
     socket.joinedRooms.forEach(function(roomID) {
       delete ROOMS[roomID].users[socket.id];
       ROOMS[roomID].userCount -= 1;
+
+      var roomUsers = makeUsers(ROOMS[roomID].users);
+      io.in(roomID).emit('usersOfRoom', roomUsers);
     });
 
     var chatrooms = makeChatrooms(ROOMS, Chatroom);
-
-    io.sockets.emit('chatrooms', chatrooms)
+    io.sockets.emit('chatrooms', chatrooms);
   });
+
+// LISTEN FOR MESSAGES FOR SELECTED AND JOINED ROOM
+  // socket.on('messagesForRoom', function(roomID, cb) {
+  //   db.query("SELECT * FROM messages WHERE room_id=$1;", [roomID], function(error, data) {
+  //     if (error) console.error;
+  //
+  //     console.log(data.rows);
+  //     cb(data.rows);
+  //
+  //     if (socket.joinedRooms) {
+  //       var joinedRoom = socket.joinedRooms.filter(function(joinedRoomId) { return roomID == joinedRoomId; });
+  //       if (joinedRoom.length == 1) cb(data.rows)
+  //     }
+  //     else {
+  //       cb([]);
+  //     }
+  //   })
+  // });
 
 });
 
@@ -164,12 +197,15 @@ server.listen(8080, function() {
 /*
   helper functions
 */
-  var objToArray = function(obj) {
-    var arr = [];
-    for (var key in obj) {
-      arr.push(key);
+  var makeUsers = function(usersObj) {
+    var users = [];
+    for (var socketID in usersObj) {
+      users.push({
+        socketID: socketID,
+        username: usersObj[socketID]
+      });
     };
-    return arr;
+    return users;
   };
 
   var makeChatrooms = function(ROOMS, Chatroom) {

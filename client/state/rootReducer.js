@@ -12,14 +12,12 @@ import { composeWithDevTools } from 'redux-devtools-extension'; // helper module
 
 // Import all reducers to be combined by combineReducers()
 import session from './session/index';
-import RoomList from './RoomList/index';
 import CurrentRoom from './CurrentRoom/index';
 
 export default createStore(
   combineReducers({
     session,
-    CurrentRoom,
-    RoomList
+    CurrentRoom
   }),
   composeWithDevTools(
     applyMiddleware(thunk)

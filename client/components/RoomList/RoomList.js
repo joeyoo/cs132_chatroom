@@ -7,8 +7,8 @@ import { Column } from 'react-foundation';
 import ClickableRoom from './ClickableRoom';
 import CreateRoomButton from './CreateRoomButton';
 
-import { RoomListActions } from '../../state/actionsIndex';
-const { updateRoomsList } = RoomListActions;
+import { sessionActions } from '../../state/actionsIndex';
+const { updateRoomsList } = sessionActions;
 
 const RoomList = React.createClass({
   componentDidMount() {
@@ -20,6 +20,7 @@ const RoomList = React.createClass({
     socket.emit('createRoom');
   },
   render() {
+
     return(
       <Column id='roomList' className='large-2'>
         <h5 className='section-header'>Live Rooms</h5>
@@ -27,7 +28,7 @@ const RoomList = React.createClass({
         <ul className='menu vertical'>
           {this.props.currentRooms.map(function(room) {
             return (
-              <ClickableRoom {...room} key={room.id} />
+              <ClickableRoom {...room} key={room.id}/>
             )
           })}
         </ul>
@@ -46,8 +47,10 @@ RoomList.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    currentRooms: state.RoomList.currentRooms,
-    selectedRoom: state.session.selectedRoom
+    currentRooms: state.session.currentRooms,
+    selectedRoom: state.session.selectedRoom,
+    joinedRooms: state.session.joinedRooms,
+    currentRoom: state.CurrentRoom.id
   }
 }
 

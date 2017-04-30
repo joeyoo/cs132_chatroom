@@ -1,15 +1,32 @@
 import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
+import {socket} from '../../index';
 
 import { Column, Colors } from 'react-foundation';
 
-import { sessionActions } from '../../state/actionsIndex';
-const {selectRoom} = sessionActions;
+import { sessionActions, CurrentRoomActions } from '../../state/actionsIndex';
+const { updateMessages } = CurrentRoomActions;
+const { selectRoom } = sessionActions;
 
 const ClickableRoom = React.createClass({
   handleRoomClick(event) {
     event.preventDefault();
     this.props.dispatch(selectRoom(this.props));
+
+    if (this.props.joinedRooms && this.props.selectedRoom) {
+      console.log(this.props.joinedRooms);
+      console.log(this.props.selectedRoom);
+      if (this.props.joinedRooms[this.props.selectedRoom]) {
+        const roomId = event.target.value || this.props.selectedRoom.id;
+
+        socket.emit('messagesForRoom', roomId, (messages) => {
+          this.props.updateMessages(messages);
+        })
+      }
+    }
+  },
+  updateMessages(messages) {
+    this.props.dispatch(updateMessages(messages));
   },
   render() {
     return(
@@ -34,10 +51,21 @@ ClickableRoom.propTypes = {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    handleRoomClick: () => {
-      dispatch(selectRoom(ownProps))
+    handleRoomClick: (event) => {
+      dispatch(selectRoom(ownProps));
+    },
+    updateMessages: (messages) => {
+      dispatch(updateMessages(messages));
     }
   }
 }
+const mapStateToProps = (state, ownProps) => {
+  return {
+    currentRooms: state.session.currentRooms,
+    selectedRoom: state.session.selectedRoom,
+    joinedRooms: state.session.joinedRooms,
+    currentRoom: state.CurrentRoom.id
+  }
+}
 
-export default connect(null, mapDispatchToProps)(ClickableRoom);
+export default connect(mapStateToProps, mapDispatchToProps)(ClickableRoom);

@@ -30,10 +30,6 @@ class CurrentRoom extends Component {
     });
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.props.selectedRoom)
-  // }
-
   handleMessageSubmit(message, roomID) {
     this.socket.emit('message', {
       sender: message.sender,

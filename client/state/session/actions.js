@@ -1,7 +1,7 @@
-export const setCurrentRoom = (room) => {
+export const selectRoom = (room) => {
   return {
-    type: 'SET_CURRENT_ROOM',
-    currentRoom: room
+    type: 'SELECT_ROOM',
+    selectedRoom: room
   }
 }
 
@@ -13,9 +13,16 @@ export const joinRoom = (username, roomID) => {
   }
 }
 
-export const selectRoom = (room) => {
+export const setCurrentRoom = (room) => {
   return {
-    type: 'SELECT_ROOM',
-    selectedRoom: room
+    type: 'SET_CURRENT_ROOM',
+    currentRoom: room
+  }
+}
+
+export const updateRoomsList = (rooms) => {
+  return {
+    type: 'UPDATE_ROOMS_LIST',
+    currentRooms: rooms
   }
 }

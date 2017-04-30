@@ -1,7 +1,8 @@
 const INITIAL_STATE = {
   joinedRooms: {},
   currentRoom: {},
-  selectedRoom: {}
+  selectedRoom: {},
+  currentRooms: []
 }
 
 const Session = (state = INITIAL_STATE, action) => {
@@ -12,6 +13,8 @@ const Session = (state = INITIAL_STATE, action) => {
       return {...state, currentRoom: action.currentRoom}
     case 'JOIN_ROOM':
       return {...state, joinedRooms: {[action.roomID]:action.username, ...state.joinedRooms} }
+    case 'UPDATE_ROOMS_LIST':
+      return {...state, currentRooms: action.currentRooms }
     default:
       return state
   }
