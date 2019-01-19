@@ -1,12 +1,6 @@
-# cs132_chatroom -> realtime
+# chatroom
 
-Please ask llu3@cs.brown.edu if you have trouble running the app. He graded my chatroom assignment before this and got it to work w/ babel.
-
-Changes (i can remember right now) from chatrooms:
-  - No longer need 'controllers' directory as no GET/POST requests are being made other than requesting the root '/'
-  - AJAX logic is replaced with socketio logic
-  - the number of users in each chatroom becomes updated in the RoomsList component
-  - 'constants.js' in each state directory has been removed to remove redundancy when returning 'action.type' in the action creators (in actions.js and reducer.js). Instead of having to import the constants, which just return strings for action types, I now just return the string literals themselves
+## What was supposed to be an average homework assignment to learn about sockets turned into a personal challenge to make a client-server app with React+Redux+tools and an API Backend using Express and a simple ORM
 
 How to run:
   ** must install babel to run on department machines
