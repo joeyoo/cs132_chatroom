@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev-server": "node apiBackend/index.js",
-    "build": "webpack -p",
+    "build": "./node_modules/webpack-dev-server/bin/webpack -p",
     "start": "npm run build && npm run dev-server & npm run dev-client",
     "dev-client": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 3000"
   },
