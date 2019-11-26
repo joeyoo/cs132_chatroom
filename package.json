@@ -4,7 +4,7 @@
   "description": "Concentrator Assignment Three",
   "main": "index.js",
   "scripts": {
-    "dev-server": "nodemon apiBackend/index.js --exec babel-node --presets es2015,react",
+    "dev-server": "node apiBackend/index.js",
     "build": "webpack",
     "dev-client": "webpack-dev-server --hot --inline --port 3000"
   },
