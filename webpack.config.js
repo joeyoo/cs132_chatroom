@@ -1,5 +1,5 @@
 var path = require('path');
-const REMOTE_URL = process.env.REMOTE_URL || 'http://localhost:8080/';
+const REMOTE_URL = process.env.REMOTE_URL || 'http://localhost:3000';
 
 module.exports = {
   entry: './client/index.js',
@@ -13,15 +13,15 @@ module.exports = {
         "Access-Control-Allow-Origin": "*"
     },
     publicPath: path.resolve(__dirname, 'client/public'),
-    proxy: {
-      "/api": {
-        secure: false,
-        target: REMOTE_URL,
-            pathRewrite: {
-                '^/api' : '/'
-            }
-      }
-    }
+    // proxy: {
+    //   "/api": {
+    //     secure: false,
+    //     target: REMOTE_URL,
+    //         pathRewrite: {
+    //             '^/api' : '/'
+    //         }
+    //   }
+    // }
   },
   resolve: {
     extensions: ['.js', '.json']
