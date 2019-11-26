@@ -9,11 +9,12 @@ module.exports = {
   },
   devtool: 'source-map',
   devServer: {
-    https: true,
+    // https: true,
     publicPath: '/client/public/',
     proxy: {
       "/api": {
-        target: "https://chhh.herokuapp.com:8080"
+        target: "http//localhost:8080",
+        secure: false
       }
     }
   },
