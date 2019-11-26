@@ -9,6 +9,7 @@ module.exports = {
   },
   devtool: 'source-map',
   devServer: {
+    https: true,
     publicPath: '/client/public/',
     proxy: {
       "/api": {
