@@ -20,7 +20,7 @@ module.exports = {
     extensions: ['.js', '.json']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.css$/,
         loader: 'style-loader!css-loader'
@@ -28,7 +28,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loaders: ['react-hot-loader','babel-loader']
+        loaders: ['babel-loader']
       }
     ]
   },
