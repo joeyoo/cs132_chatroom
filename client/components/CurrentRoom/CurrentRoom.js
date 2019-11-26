@@ -42,7 +42,7 @@ class CurrentRoom extends Component {
     let messages = this.props.messages || [];
 
     return(
-      <Column id='selectedRoom' className='large-7'>
+      <Column id='selectedRoom' className='medium-7'>
         <h5 className='section-header'>
           {this.props.selectedRoom.id || "Click a Room To Join"}
         </h5>

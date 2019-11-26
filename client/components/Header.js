@@ -5,8 +5,8 @@ const Header = React.createClass({
     return(
       <div id='header'>
 
-        <h1>Room-ly-fy-er</h1>
-        
+        <h1>Chatrooms functionality</h1>
+
       </div>
     )
   }

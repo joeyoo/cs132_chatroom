@@ -30,7 +30,7 @@ class App extends Component {
     return(
       <Row id='app' className='large-12'>
 
-        <Row id='header' className='large-12'>
+        <Row id='header' className='tiny-12'>
           <Header />
         </Row>
 
@@ -42,7 +42,7 @@ class App extends Component {
           <RoomDetails />
         </Row>
 
-        <Row id="footer" className='large-12'>
+        <Row id="footer" className='small-12'>
           <Footer />
         </Row>
 
