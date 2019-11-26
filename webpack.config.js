@@ -9,14 +9,14 @@ module.exports = {
     filename: 'bundle.js'
   },
   devServer: {
-    // https: true,
-    publicPath: '/client/public/',
-    host: '0.0.0.0',
+    headers: {
+        "Access-Control-Allow-Origin": "*"
+    },
+    publicPath: path.resolve(__dirname, 'client/public'),
     proxy: {
       "/api": {
-        target: "http//localhost:8080",
         secure: false,
-                    target: REMOTE_URL,
+        target: REMOTE_URL,
             pathRewrite: {
                 '^/api' : '/'
             }

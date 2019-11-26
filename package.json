@@ -7,7 +7,7 @@
     "dev-server": "node apiBackend/index.js",
     "build": "webpack -p",
     "start": "npm run build && npm run dev-server & npm run dev-client",
-    "dev-client": "webpack-dev-server --port 3000"
+    "dev-client": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 3000"
   },
   "author": "Joseph Yoo",
   "license": "ISC",
