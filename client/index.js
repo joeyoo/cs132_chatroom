@@ -7,8 +7,10 @@ import io from 'socket.io-client';
 import './public/css/app.css';
 // Import App Component
 import App from './components/App';
+
+const REMOTE_URL = process.env.REMOTE_URL || 'http://localhost:8080/';
 // initialize and export client socket (in order to not initilize new client socket connections)
-export const socket = io("http://chhh.herokuapp.com:8080");
+export const socket = io(REMOTE_URL);
 // import redux store
 import store from './state/rootReducer';
 // import some redux actions to update store from socket events

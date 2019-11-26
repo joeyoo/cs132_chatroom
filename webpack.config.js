@@ -1,4 +1,5 @@
 var path = require('path');
+const REMOTE_URL = process.env.REMOTE_URL || 'http://localhost:8080/';
 
 module.exports = {
   entry: './client/index.js',
@@ -7,14 +8,18 @@ module.exports = {
     publicPath: '/client/public/',
     filename: 'bundle.js'
   },
-  devtool: 'source-map',
   devServer: {
     // https: true,
     publicPath: '/client/public/',
+    host: '0.0.0.0',
     proxy: {
       "/api": {
         target: "http//localhost:8080",
-        secure: false
+        secure: false,
+                    target: REMOTE_URL,
+            pathRewrite: {
+                '^/api' : '/'
+            }
       }
     }
   },
