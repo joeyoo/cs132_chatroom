@@ -13,7 +13,7 @@ module.exports = {
     publicPath: '/client/public/',
     proxy: {
       "/api": {
-        target: "http://chhh.herokuapp.com:8080"
+        target: "https://chhh.herokuapp.com:8080"
       }
     }
   },
