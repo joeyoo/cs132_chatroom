@@ -3,12 +3,12 @@ import Scroll, { animateScroll } from 'react-scroll';
 
 import Message from './Message';
 
-const MessagesContainer = React.createClass({
+class MessagesContainer extends React.Component {
   componentDidUpdate() {
     animateScroll.scrollToBottom({
       containerId: 'messagesContainer'
     });
-  },
+  }
   render() {
     let messages = this.props.messages;
 
@@ -20,10 +20,6 @@ const MessagesContainer = React.createClass({
       </ul>
     )
   }
-});
-const { arrayOf, instanceOf } = PropTypes;
-MessagesContainer.propTypes = {
-  messages: arrayOf(instanceOf(Message).isRequired)
-}
+};
 
 export default MessagesContainer;

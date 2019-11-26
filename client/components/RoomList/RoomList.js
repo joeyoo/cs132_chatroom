@@ -10,15 +10,15 @@ import CreateRoomButton from './CreateRoomButton';
 import { sessionActions } from '../../state/actionsIndex';
 const { updateRoomsList } = sessionActions;
 
-const RoomList = React.createClass({
+class RoomList extends React.Component {
   componentDidMount() {
     socket.on('chatrooms', (chatrooms) => {
       this.props.dispatch(updateRoomsList(chatrooms));
     });
-  },
+  }
   handleCreateClick() {
     socket.emit('createRoom');
-  },
+  }
   render() {
 
     return(
@@ -35,15 +35,7 @@ const RoomList = React.createClass({
       </Column>
     )
   }
-});
-
-RoomList.propTypes = {
-  currentRooms: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    userCount: PropTypes.number
-  }).isRequired).isRequired,
-  dispatch: PropTypes.func.isRequired
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {

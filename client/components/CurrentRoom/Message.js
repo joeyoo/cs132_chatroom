@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 import { Callout, Column } from 'react-foundation';
 
-const Message = React.createClass({
+class Message extends React.Component {
   render() {
     return (
       <Callout className='message'>
@@ -12,11 +12,6 @@ const Message = React.createClass({
       </Callout>
     )
   }
-});
-
-Message.propTypes = {
-  sender: PropTypes.string.isRequired,
-  body: PropTypes.string.isRequired
-}
+};
 
 export default Message;

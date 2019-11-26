@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Footer = React.createClass({
+class Footer extends React.Component {
   render() {
     return(
       <div id='footer'>
@@ -14,6 +14,6 @@ const Footer = React.createClass({
       </div>
     )
   }
-})
+}
 
 export default Footer;

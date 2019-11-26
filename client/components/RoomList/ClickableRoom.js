@@ -8,7 +8,7 @@ import { sessionActions, CurrentRoomActions } from '../../state/actionsIndex';
 const { updateMessages } = CurrentRoomActions;
 const { selectRoom } = sessionActions;
 
-const ClickableRoom = React.createClass({
+class ClickableRoom extends React.Component {
   handleRoomClick(event) {
     event.preventDefault();
     this.props.dispatch(selectRoom(this.props));
@@ -24,10 +24,10 @@ const ClickableRoom = React.createClass({
         })
       }
     }
-  },
+  }
   updateMessages(messages) {
     this.props.dispatch(updateMessages(messages));
-  },
+  }
   render() {
     return(
       <li>
@@ -40,13 +40,6 @@ const ClickableRoom = React.createClass({
       </li>
     )
   }
-})
-
-
-ClickableRoom.propTypes = {
-  id: PropTypes.string.isRequired,
-  handleRoomClick: PropTypes.func.isRequired,
-  userCount: PropTypes.number
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {

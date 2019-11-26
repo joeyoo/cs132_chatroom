@@ -54,11 +54,6 @@ class CurrentRoom extends Component {
   }
 };
 
-const {shape, string, func, arrayOf, number} = PropTypes;
-CurrentRoom.propTypes = {
-  selectedRoom: shape({ id: string }),
-  dispatch: func.isRequired
-}
 
 const mapStateToProps = (state) => {
   let myUsername = state.CurrentRoom.myUsername;

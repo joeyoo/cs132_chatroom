@@ -3,7 +3,7 @@ import {Column} from 'react-foundation';
 
 import { connect } from 'react-redux';
 
-const RoomDetails = React.createClass({
+class RoomDetails extends React.Component {
   render() {
     let myUsername = this.props.joinedRooms[this.props.id];
 
@@ -22,16 +22,7 @@ const RoomDetails = React.createClass({
       </Column>
     )
   }
-});
-
-RoomDetails.propTypes = {
-  id: PropTypes.string,
-  users: PropTypes.arrayOf(PropTypes.shape({
-    username: PropTypes.string
-  })),
-  socketId: PropTypes.string
-}
-
+};
 const mapStateToProps = (state) => {
   return {
     id: state.session.selectedRoom.id,
