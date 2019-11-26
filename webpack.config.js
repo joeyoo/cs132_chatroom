@@ -13,15 +13,15 @@ module.exports = {
         "Access-Control-Allow-Origin": "*"
     },
     publicPath: path.resolve(__dirname, 'client/public'),
-    // proxy: {
-    //   "/api": {
-    //     secure: false,
-    //     target: REMOTE_URL,
-    //         pathRewrite: {
-    //             '^/api' : '/'
-    //         }
-    //   }
-    // }
+    proxy: {
+      "/api": {
+        secure: false,
+        target: REMOTE_URL,
+            pathRewrite: {
+                '^/api' : '/'
+            }
+      }
+    }
   },
   resolve: {
     extensions: ['.js', '.json']
