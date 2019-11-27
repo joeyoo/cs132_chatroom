@@ -7,8 +7,8 @@
     "dev-server": "node apiBackend/index.js",
     "build": "webpack -p",
     "postinstall": "npm run build",
-    "start": "npm run dev-server & npm run dev-client",
-    "dev-client": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port $PORT --host 0.0.0.0"
+    "start": "npm run build && npm run dev-server & npm run dev-client",
+    "dev-client": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 8080"
   },
   "author": "Joseph Yoo",
   "license": "ISC",

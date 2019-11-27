@@ -191,7 +191,7 @@ console.log("client (" + socket.id + ") DISCONNECTED");
 
 // Begin listening with a success callback
 server.listen(process.env.PORT || 3000, function() {
-  console.log('Listening on port 8080');
+  console.log('Listening on port 3000');
 });
 
 /*
